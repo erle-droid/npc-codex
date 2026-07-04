@@ -722,6 +722,49 @@ function App() {
     setEditingDomId(null);
     setModal(null);
   };
+
+  // Cascade deletes
+  const removeNPCs = ids => {
+    if (!ids.length) return;
+    const idSet = new Set(ids);
+    setNpcs(p => p.filter(n => !idSet.has(n.id)));
+    setRelationships(p => p.filter(r => !idSet.has(r.from) && !idSet.has(r.to)));
+    setNotes(p => { const q = { ...p }; ids.forEach(id => delete q[id]); return q; });
+    setCustomStatus(p => { const q = { ...p }; ids.forEach(id => delete q[id]); return q; });
+  };
+  const deleteLoc = id => {
+    const affected = npcs.filter(n => n.location === id);
+    const loc = locations.find(l => l.id === id);
+    if (!window.confirm(`Delete location "${loc?.name}"?\nThis also deletes ${affected.length} NPC(s) in it. This cannot be undone.`)) return;
+    removeNPCs(affected.map(n => n.id));
+    setLocations(p => p.filter(l => l.id !== id));
+    setEditingLocId(null); setModal(null);
+  };
+  const deleteCat = id => {
+    const catLocs = locations.filter(l => l.category === id);
+    const locIds = new Set(catLocs.map(l => l.id));
+    const affected = npcs.filter(n => locIds.has(n.location));
+    const cat = categories.find(x => x.id === id);
+    if (!window.confirm(`Delete region "${cat?.name}"?\nThis also deletes ${catLocs.length} location(s) and ${affected.length} NPC(s). This cannot be undone.`)) return;
+    removeNPCs(affected.map(n => n.id));
+    setLocations(p => p.filter(l => l.category !== id));
+    setCategories(p => p.filter(x => x.id !== id));
+    setEditingCatId(null); setModal(null);
+  };
+  const deleteDom = id => {
+    const domCats = categories.filter(cat => (cat.domain || "barovia") === id);
+    const catIds = new Set(domCats.map(x => x.id));
+    const domLocs = locations.filter(l => catIds.has(l.category));
+    const locIds = new Set(domLocs.map(l => l.id));
+    const affected = npcs.filter(n => locIds.has(n.location));
+    const dom = domains.find(d => d.id === id);
+    if (!window.confirm(`Delete domain "${dom?.name}"?\nThis also deletes ${domCats.length} region(s), ${domLocs.length} location(s) and ${affected.length} NPC(s). This cannot be undone.`)) return;
+    removeNPCs(affected.map(n => n.id));
+    setLocations(p => p.filter(l => !catIds.has(l.category)));
+    setCategories(p => p.filter(x => !catIds.has(x.id)));
+    setDomains(p => p.filter(d => d.id !== id));
+    setEditingDomId(null); setModal(null);
+  };
   const addRel = () => {
     if (!relF.from || !relF.to || !relF.label) return;
     setRelationships(p => [...p, { ...relF }]);
@@ -1114,9 +1157,12 @@ function App() {
             </Field>
             <Field label="Color"><input type="color" value={locF.color} onChange={e => setLocF(f => ({ ...f, color: e.target.value }))} style={{ width: 48, height: 36, border: "none", borderRadius: 4, cursor: "pointer" }} /></Field>
           </div>
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 20 }}>
-            <Btn color="#6b7280" onClick={() => { setModal(null); setEditingLocId(null); }}>Cancel</Btn>
-            <Btn color="#60a5fa" onClick={editingLocId ? saveLoc : addLoc}>{editingLocId ? "Save Changes" : "Add Location"}</Btn>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginTop: 20 }}>
+            <div>{editingLocId && <Btn color="#f87171" onClick={() => deleteLoc(editingLocId)}>🗑 Delete Location</Btn>}</div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <Btn color="#6b7280" onClick={() => { setModal(null); setEditingLocId(null); }}>Cancel</Btn>
+              <Btn color="#60a5fa" onClick={editingLocId ? saveLoc : addLoc}>{editingLocId ? "Save Changes" : "Add Location"}</Btn>
+            </div>
           </div>
         </Modal>
       )}
@@ -1132,9 +1178,12 @@ function App() {
             </Field>
             <Field label="Color"><input type="color" value={catF.color} onChange={e => setCatF(f => ({ ...f, color: e.target.value }))} style={{ width: 48, height: 36, border: "none", borderRadius: 4, cursor: "pointer" }} /></Field>
           </div>
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 20 }}>
-            <Btn color="#6b7280" onClick={() => { setModal(null); setEditingCatId(null); }}>Cancel</Btn>
-            <Btn color="#c084fc" onClick={editingCatId ? saveCat : addCat}>{editingCatId ? "Save Changes" : "Add Region"}</Btn>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginTop: 20 }}>
+            <div>{editingCatId && <Btn color="#f87171" onClick={() => deleteCat(editingCatId)}>🗑 Delete Region</Btn>}</div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <Btn color="#6b7280" onClick={() => { setModal(null); setEditingCatId(null); }}>Cancel</Btn>
+              <Btn color="#c084fc" onClick={editingCatId ? saveCat : addCat}>{editingCatId ? "Save Changes" : "Add Region"}</Btn>
+            </div>
           </div>
         </Modal>
       )}
@@ -1175,9 +1224,12 @@ function App() {
             </Field>
             <Field label="Color"><input type="color" value={domF.color} onChange={e => setDomF(f => ({ ...f, color: e.target.value }))} style={{ width: 48, height: 36, border: "none", borderRadius: 4, cursor: "pointer" }} /></Field>
           </div>
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 20 }}>
-            <Btn color="#6b7280" onClick={() => { setModal(null); setEditingDomId(null); }}>Cancel</Btn>
-            <Btn color="#f472b6" onClick={editingDomId ? saveDom : addDom}>{editingDomId ? "Save Changes" : "Add Domain"}</Btn>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginTop: 20 }}>
+            <div>{editingDomId && <Btn color="#f87171" onClick={() => deleteDom(editingDomId)}>🗑 Delete Domain</Btn>}</div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <Btn color="#6b7280" onClick={() => { setModal(null); setEditingDomId(null); }}>Cancel</Btn>
+              <Btn color="#f472b6" onClick={editingDomId ? saveDom : addDom}>{editingDomId ? "Save Changes" : "Add Domain"}</Btn>
+            </div>
           </div>
         </Modal>
       )}
