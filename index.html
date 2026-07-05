@@ -30,6 +30,46 @@ const INITIAL_DOMAINS = [
   { id: "dementlieu", name: "Dementlieu", color: "#a855f7", darklordId: "" },
 ];
 
+
+const HARAKIR_DOMAIN = { id: "harakir", name: "Har'Akir", color: "#d4a017", darklordId: "" };
+const HARAKIR_CATEGORIES = [
+  { id: "hk_eternal_river",   name: "The Eternal River",      color: "#0e7490", domain: "harakir" },
+  { id: "hk_north_desert",    name: "Northern Desert",         color: "#ca8a04", domain: "harakir" },
+  { id: "hk_west_desert",     name: "Western Desert",          color: "#b45309", domain: "harakir" },
+  { id: "hk_central_desert",  name: "Central Desert",          color: "#a16207", domain: "harakir" },
+  { id: "hk_east_desert",     name: "Eastern Desert",          color: "#92400e", domain: "harakir" },
+  { id: "hk_south_desert",    name: "Southern Desert",         color: "#c2410c", domain: "harakir" },
+  { id: "hk_suns_throne",     name: "Sun's Throne Mountains",  color: "#78716c", domain: "harakir" },
+];
+const HARAKIR_LOCATIONS = [
+  { id: "hk_muhar", name: "M\u00fchar", category: "hk_eternal_river", color: "#d4a017", notes: "Settlement. Isu Rehkotep makes a perfect first obstacle \u2014 officious, suspicious of outsiders, and hiding her own terror of failing her pharaoh. The Mouth of Oru (pit to the Labyrinth) in the temple courtyard is a great threat and potential plot entry. Consider: is there a resistance movement here? Merchants who trade in forbidden pre-Ankhtepot religious objects? A district where the poor whisper the old gods' names?" },
+  { id: "hk_muhar_oasis", name: "Muhar Oasis", category: "hk_north_desert", color: "#0e7490", notes: "Oasis. Good place for the party's first NPC contact \u2014 a water-seller, a caravan master, or a fugitive hiding among the travellers. Could be where Sute's Chosen (the sandstorm guides) are hired. Consider a body found floating in the water \u2014 killed before they could reach M\u00fchar. Or a priest collecting 'water tithes' with mummy enforcers." },
+  { id: "hk_white_oasis", name: "White Oasis", category: "hk_west_desert", color: "#e7e5e4", notes: "Oasis. The white salt-crust around the oasis could suggest it was once larger and is slowly dying \u2014 a creeping wrongness the locals ignore. Could be a waypoint for smugglers running goods between the Hollow Dunes and River's Shelter. A lone hermit here who knows things about the Lost Crescent? Perhaps the water tastes faintly of something sweet and wrong." },
+  { id: "hk_red_oasis", name: "Red Oasis", category: "hk_west_desert", color: "#b91c1c", notes: "Oasis. The red water is drinkable but leaves stains and a metallic taste \u2014 great survival horror detail. This could be the site of the original battle where Ankhtepot's priests were executed, making it sacred-cursed ground. Consider: desert zombies rising from beneath the sand at night, drawn to the living. Or a Children of Ankhtepot faction using this as a staging point for expeditions into the Hollow Dunes." },
+  { id: "hk_rivers_shelter", name: "River's Shelter", category: "hk_eternal_river", color: "#0891b2", notes: "Waystation. Could be a semi-legitimate stopping point run by a family that has served travellers for generations \u2014 and watched too many of them disappear. An old ferryman who has crossed the river so many times he seems to half-belong to the other side. The river itself might occasionally run backward for an hour at dawn. What does the river carry when it floods? What has it deposited on the banks?" },
+  { id: "hk_slithering_sands", name: "The Slithering Sands", category: "hk_north_desert", color: "#65a30d", notes: "Hazard Region. The sands could be home to a massive communal asp nest \u2014 hundreds of thousands of snakes that move as a single mass at night. The hissing the sand makes might actually be the snakes underneath. Consider: a lost caravan half-buried here, still intact, cargo untouched \u2014 because no one has been able to get near it. Or a Sute's Chosen guide who knows the safe path but is slowly going mad from the things she sees." },
+  { id: "hk_sands_of_sute", name: "Sands of Sute", category: "hk_central_desert", color: "#a16207", notes: "Hazard Region. The Labyrinth below is as important as the desert above \u2014 consider introducing it early as a rumour (locals know it exists) and letting players discover an entrance. Sute's Chosen are the sandstorm guides: mortal religious figures who claim divine protection. Are they genuinely guided, or do they just know the patterns? One of them could be a key recurring NPC ally or a spy for Isu Rehkotep." },
+  { id: "hk_hollow_dunes", name: "The Hollow Dunes", category: "hk_west_desert", color: "#854d0e", notes: "Hazard Region. The dunes are hollow because of extensive ancient tunnelling beneath \u2014 connected to the Labyrinth but older, pre-dating even Ankhtepot's rule. Things that were here before Ankhtepot are still here. Consider: giant ant lion pits hidden in the dune hollows (canonical creature for Har'Akir). Or a buried city that predates Har'Akir entirely \u2014 a civilisation that worshipped something Ankhtepot destroyed and covered up." },
+  { id: "hk_lost_crescent", name: "The Lost Crescent", category: "hk_west_desert", color: "#64748b", notes: "Ruin. The crescent shape mirrors the moon \u2014 this could be a temple to Osiris or a lunar deity, deliberately destroyed by Ankhtepot and its name erased. The stones are too heavy to have been moved by humans \u2014 what built them? Each stone bears faint carvings that match no known Akiri script. Consider: it only appears on maps drawn before Ankhtepot's rise. All newer maps omit it entirely \u2014 as if it was ordered forgotten." },
+  { id: "hk_breath_forgotten", name: "Breath of the Forgotten", category: "hk_central_desert", color: "#7c3aed", notes: "Mystical Sandstorm. The visions here show the true gods of Har'Akir \u2014 the ones Ankhtepot replaced. A PC who survives the Breath might emerge with a fragment of forbidden divine knowledge, which makes them both powerful and hunted by Isu's priests. Consider: the Breath intensifies when someone nearby is searching for Ankhtepot's ka. Could it be navigable if you carry an object connected to the old religion?" },
+  { id: "hk_breath_false", name: "Breath of the False", category: "hk_central_desert", color: "#6d28d9", notes: "Mystical Sandstorm. The false futures it shows are not random \u2014 they are drawn from Ankhtepot's fears. Travellers see a future where the pharaoh is mortal and dying, surrounded by enemies. This could be a clue about the ka's location. Consider: a survivor of the Breath who has been living in a false memory for years, rebuilding their life around something that didn't happen. They are dangerous because they are completely certain." },
+  { id: "hk_path_asp", name: "Path of the Asp", category: "hk_north_desert", color: "#4d7c0f", notes: "Hazard Route. The asps are canonically a major Har'Akir creature. Consider making them feel supernatural \u2014 moving with unusual purpose, parting for certain individuals, striking others without provocation. A Sute's Chosen guide NPC is a natural fit here: useful but double-edged. The path should feel genuinely dangerous even when 'safe.' What does the party do when someone gets bitten a day's walk from the nearest oasis?" },
+  { id: "hk_seks_tears", name: "Sek's Tears", category: "hk_north_desert", color: "#0d9488", notes: "Oasis / Natural Feature. The name 'Sek' may refer to a deity (Sekhmet, goddess of destruction and disease, is a possible root). The tears could literally be divine grief made manifest \u2014 an old god weeping for what Ankhtepot did to Har'Akir's religion. Consider: the water here heals disease and curse effects \u2014 which is why Ankhtepot's priests tax access to it so heavily. A hidden sect of the old religion gathers here at night to pray." },
+  { id: "hk_lanners_mark", name: "Lanner's Mark", category: "hk_east_desert", color: "#d97706", notes: "Waypoint. Lanner falcons were sacred to Ra in Egyptian mythology \u2014 this waypoint may have been a shrine in the old religion, deliberately left unmarked under Ankhtepot's rule. The offerings left here disappear because a falcon-headed spirit (a weakened divine servant) is consuming them to survive. Consider: the spirit can deliver messages between locations \u2014 for a price. Or it has been watching the party and has information to trade." },
+  { id: "hk_bent_pyramid", name: "Bent Pyramid", category: "hk_north_desert", color: "#eab308", notes: "Tomb Complex. The singing mechanic is a genuinely strange and memorable hook \u2014 lean into it. The pyramid doesn't respond to any song, but to a specific hymn of the old religion that Ankhtepot suppressed. Finding the melody is a subplot. Inside: the architect who designed it was buried here alive when the angle-change was ordered \u2014 his ghost knows what was changed and why. The original design would have functioned as a beacon to the true gods." },
+  { id: "hk_ousas_pyramid", name: "Ousa's Pyramid", category: "hk_south_desert", color: "#f59e0b", notes: "Ritual Site. This is the campaign's ritual endgame location \u2014 the party will need to either use it or prevent its use. The door between worlds is real, even if Ousa is false. Consider: the chamber can also be used to contact the dead \u2014 a way for the party to speak with someone they've lost. Or to interrogate a mummy lord that they've killed. The full moon timing creates a hard deadline: a natural doom clock for the Har'Akir arc." },
+  { id: "hk_missing_monuments", name: "The Missing Monuments", category: "hk_central_desert", color: "#78716c", notes: "Ruin. The monuments were removed, not destroyed \u2014 someone wanted them preserved, not erased. They could have been moved underground into the Labyrinth to protect them from Ankhtepot, by a faction of the old religion. The foundations mark the locations of the true gods' shrines. The party standing on the correct foundation and performing the right ritual could temporarily manifest the old god's influence in the domain. Ankhtepot will feel it immediately." },
+  { id: "hk_kharafek_excavation", name: "Kharafek's Excavation", category: "hk_west_desert", color: "#a8a29e", notes: "Archaeological Site. Kharafek could have been a scholar, a rogue priest, or a foreign archaeologist who came too close to something. The dig stopped suddenly \u2014 tools still in the trenches, scaffolding still up, fires still in the hearths. Whatever was found was covered back up. Consider: the dig site is actually directly above a Labyrinth chamber that contains a fragment of Ankhtepot's ka. Isu Rehkotep had it sealed and has been 'forgetting' to record its existence." },
+  { id: "hk_nebs_vein", name: "Neb's Vein", category: "hk_south_desert", color: "#57534e", notes: "Mine / Ruin. The ore mined here could be canopic stone \u2014 the same material used to make canopic jars for mummification. In sufficient quantity, it suppresses magical healing and disrupts undeath, which explains why Ankhtepot had it sealed. Alternatively: the mine goes so deep it reaches the Labyrinth, and something has been climbing up. The miners who worked here are still down there \u2014 transformed into something that mines without rest or reason." },
+  { id: "hk_defaced_temple", name: "Defaced Temple", category: "hk_south_desert", color: "#9a3412", notes: "Ruin. This is almost certainly a temple to one of the true gods \u2014 probably Osiris, Ra, or Thoth \u2014 that Ankhtepot ordered destroyed when he came to power. The one intact face could be a divine guardian that resisted erasure, now trapped in the stone, screaming silently. The party touching or praying at this face might attract the attention of the true gods \u2014 and the wrath of the Children of Ankhtepot. Could be a site where the old religion's resistance still meets in secret at night." },
+  { id: "hk_city_of_dead", name: "City of the Dead", category: "hk_east_desert", color: "#44403c", notes: "Necropolis. Best treated as a multi-session location rather than a single encounter. Consider separate 'districts' \u2014 the Old Tombs (pre-Ankhtepot, genuinely dangerous), the New Crypts (Ankhtepot's false-god priests, organised and patrolled), and the Abandoned Quarter (neither side controls it, something else does). A priest-class NPC who offers to guide the party through for a price \u2014 and whose price is morally interesting." },
+  { id: "hk_senmets_tomb", name: "Senmet's Tomb", category: "hk_suns_throne", color: "#71717a", notes: "Tomb. Senmet is the campaign's most interesting potential NPC alliance \u2014 he wants Ankhtepot destroyed as much as anyone, but his motives are purely self-interested. He would absolutely betray the party the moment it serves him. He could be a source of forbidden knowledge about the ka. Consider: his tomb is a trap he set for Ankhtepot's agents, not his actual lair. He's watching to see who enters it \u2014 and what they do." },
+  { id: "hk_huseh_kahs_tomb", name: "Huseh Kah's Tomb", category: "hk_suns_throne", color: "#52525b", notes: "Tomb. The name is significant: someone who swallowed a ka. This could be the tomb of the priest who performed the original ritual that stripped Ankhtepot's ka \u2014 and who was subsequently entombed with the ka fragment inside them. The burial chamber has never been opened because whatever is inside doesn't want to be freed. The wards here are not to keep people out \u2014 they are to keep something in. The Breath of the False is nearby, perhaps because this tomb leaks false-memory energy." },
+  { id: "hk_pharaohs_rest", name: "Pharaoh's Rest", category: "hk_east_desert", color: "#facc15", notes: "Seat of Power (within the City of the Dead). The party should not come here until they are ready for the endgame \u2014 but they should know it exists from session one. Consider a Grim Portent where a Children of Ankhtepot delegation passes through a location the party is in, en route to Pharaoh's Rest with 'tribute.' Following them reveals the canyon approach. Ankhtepot himself may be approachable diplomatically if the party has something he wants \u2014 specifically, any information about his ka." },
+  { id: "hk_suns_throne_mtns", name: "Sun's Throne Mountains", category: "hk_suns_throne", color: "#78716c", notes: "Geographic Feature (eastern border). The mountains are the domain's hard eastern edge \u2014 crossing them means entering the Mists, which is a possible escape route or a trap. Consider a pass that seems navigable but loops travellers back to the canyon. Creatures here should be distinct from the desert \u2014 things that have adapted to altitude and stone: kheferu (sphinx variants), harpies reskinned as ka-thieves, or something entirely new that nests in the abandoned tomb shafts." },
+  { id: "hk_eternal_river_loc", name: "The Eternal River", category: "hk_eternal_river", color: "#06b6d4", notes: "Geographic Feature (central Har'Akir). The river is Har'Akir's most powerful symbol \u2014 it maps onto the Nile and onto the Egyptian concept of a river flowing through both worlds. Consider: at certain hours (dawn, dusk) the river becomes briefly translucent and you can see things moving beneath that are not fish. A bargeman who has made the same stretch of river for fifty years and never ages. The river could be a navigation tool \u2014 an object connected to the true gods might respond differently in the river than anywhere else." },
+];
+
 const INITIAL_CATEGORIES = [
   { id: "barovia_proper", name: "Barovia Proper", color: "#92400e", domain: "barovia" },
   { id: "vallaki_region", name: "Vallaki Region", color: "#3b82f6", domain: "barovia" },
@@ -634,6 +674,13 @@ function App() {
   useEffect(() => { try { window.localStorage.setItem("npcCodex_notes", JSON.stringify(notes)); } catch {} }, [notes]);
   useEffect(() => { try { window.localStorage.setItem("npcCodex_darklordId", JSON.stringify(darklordId)); } catch {} }, [darklordId]);
   useEffect(() => { try { window.localStorage.setItem("npcCodex_domains", JSON.stringify(domains)); } catch {} }, [domains]);
+  // One-time seed: add Har'Akir domain, regions, and locations if not yet present
+  useEffect(() => {
+    if (domains.some(d => d.id === "harakir")) return;
+    setDomains(p => p.some(d => d.id === "harakir") ? p : [...p, HARAKIR_DOMAIN]);
+    setCategories(p => [...p, ...HARAKIR_CATEGORIES.filter(cat => !p.some(x => x.id === cat.id))]);
+    setLocations(p => [...p, ...HARAKIR_LOCATIONS.filter(l => !p.some(x => x.id === l.id))]);
+  }, []);
   const [filter, setFilter]           = useState({ faction: "all", location: "all", category: "all", domain: "all", search: "" });
   const [view, setView]               = useState("grid"); // grid | map | detail
   const [selected, setSelected]       = useState(null);
@@ -681,7 +728,8 @@ function App() {
 
   // forms
   const [npcF, setNpcF] = useState({ name: "", location: "", faction: "neutral", status: "alive", description: "", tags: "" });
-  const [locF, setLocF] = useState({ name: "", category: "", color: "#6b7280" });
+  const [locF, setLocF] = useState({ name: "", category: "", color: "#6b7280", notes: "" });
+  const [locNoteOpen, setLocNoteOpen] = useState({});
   const [catF, setCatF] = useState({ name: "", color: "#6b7280", domain: "barovia" });
   const [domF, setDomF] = useState({ name: "", color: "#6b7280", darklordId: "" });
   const [editingDomId, setEditingDomId] = useState(null);
@@ -774,7 +822,7 @@ function App() {
   const [editingLocId, setEditingLocId] = useState(null);
   const openEditLoc = loc => {
     setEditingLocId(loc.id);
-    setLocF({ name: loc.name, category: loc.category, color: loc.color || "#6b7280" });
+    setLocF({ name: loc.name, category: loc.category, color: loc.color || "#6b7280", notes: loc.notes || "" });
     setModal("loc");
   };
   const saveLoc = () => {
@@ -1061,8 +1109,14 @@ function App() {
                           <div style={{ width: 6, height: 6, borderRadius: "50%", background: loc.color || cat.color }} />
                           <span style={{ fontSize: 11, letterSpacing: 3, textTransform: "uppercase", color: "#9ca3af" }}>{loc.name}</span>
                           <span onClick={() => openEditLoc(loc)} title="Edit location" style={{ fontSize: 11, color: "#6b7280", cursor: "pointer", padding: "1px 5px", borderRadius: 3, background: "rgba(255,255,255,0.04)" }}>✎</span>
+                          {loc.notes && (
+                            <span onClick={() => setLocNoteOpen(p => ({ ...p, [loc.id]: !p[loc.id] }))} title="DM notes" style={{ fontSize: 11, color: locNoteOpen[loc.id] ? "#d4a017" : "#6b7280", cursor: "pointer", padding: "1px 5px", borderRadius: 3, background: "rgba(255,255,255,0.04)" }}>📜</span>
+                          )}
                           <div style={{ flex: 1, height: 1, background: "rgba(180,100,50,0.1)" }} />
                         </div>
+                        {loc.notes && locNoteOpen[loc.id] && (
+                          <div style={{ fontSize: 12, color: "#c4a882", fontStyle: "italic", lineHeight: 1.6, background: "rgba(212,160,23,0.06)", border: "1px solid rgba(212,160,23,0.2)", borderRadius: 6, padding: "8px 12px", marginBottom: 10 }}>{loc.notes}</div>
+                        )}
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(185px,1fr))", gap: 8 }}>
                           {ln.map(npc => <Card key={npc.id} npc={npc} />)}
                         </div>
@@ -1156,6 +1210,11 @@ function App() {
               </select>
             </Field>
             <Field label="Color"><input type="color" value={locF.color} onChange={e => setLocF(f => ({ ...f, color: e.target.value }))} style={{ width: 48, height: 36, border: "none", borderRadius: 4, cursor: "pointer" }} /></Field>
+          </div>
+          <div style={{ marginTop: 12 }}>
+            <Field label="DM Notes">
+              <textarea value={locF.notes} onChange={e => setLocF(f => ({ ...f, notes: e.target.value }))} rows={5} style={{ ...inputStyle, width: "100%", minWidth: 260, resize: "vertical", fontFamily: "inherit", lineHeight: 1.5 }} />
+            </Field>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", gap: 10, marginTop: 20 }}>
             <div>{editingLocId && <Btn color="#f87171" onClick={() => deleteLoc(editingLocId)}>🗑 Delete Location</Btn>}</div>
